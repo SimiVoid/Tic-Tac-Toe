@@ -220,9 +220,159 @@ namespace TicTacToe
             return null;
         }
 
-        void ComputerMove()
+        private void ComputerMove()
         {
+            // TODO: Modify
 
+            for (var i = 0; i < 3; ++i)
+                if (BoardData[i][0] == BoardData[i][2] && BoardData[i][1] == null && BoardData[i][0] == false)
+                {
+                    BoardData[i][1] = false;
+                    DrawCircle(i, 1);
+                    WhoMove = true;s
+                    return;
+                }
+
+            for (var i = 0; i < 3; ++i)
+                if (BoardData[0][i] == BoardData[2][i] && BoardData[1][i] == null && BoardData[0][i] == false)
+                {
+                    BoardData[1][i] = false;
+                    DrawCircle(1, i);
+                    WhoMove = true;
+                    return;
+                }
+
+            if (BoardData[0][0] == BoardData[2][2] && BoardData[1][1] == null && BoardData[0][0] == false)
+            {
+                BoardData[1][1] = false;
+                DrawCircle(1, 1);
+                WhoMove = true;
+                return;
+            }
+
+            if (BoardData[0][0] == BoardData[1][1] && BoardData[2][2] == null && BoardData[0][0] == false)
+            {
+                BoardData[2][2] = false;
+                DrawCircle(2, 2);
+                WhoMove = true;
+                return;
+            }
+
+            if (BoardData[2][2] == BoardData[1][1] && BoardData[0][0] == null && BoardData[1][1] == false)
+            {
+                BoardData[0][0] = false;
+                DrawCircle(0, 0);
+                WhoMove = true;
+                return;
+            }
+            if (BoardData[2][0] == BoardData[0][2] && BoardData[1][1] == null && BoardData[2][0] == false)
+            {
+                BoardData[1][1] = false;
+                DrawCircle(1, 1);
+                WhoMove = true;
+                return;
+            }
+
+            if (BoardData[2][0] == BoardData[1][1] && BoardData[0][2] == null && BoardData[2][0] == false)
+            {
+                BoardData[0][2] = false;
+                DrawCircle(0, 2);
+                WhoMove = true;
+                return;
+            }
+
+            if (BoardData[0][2] == BoardData[1][1] && BoardData[2][0] == null && BoardData[0][2] == false)
+            {
+                BoardData[0][2] = false;
+                DrawCircle(0, 2);
+                WhoMove = true;
+                return;
+            }
+
+            for (var i = 0; i < 3; ++i)
+                if (BoardData[i][0] == BoardData[i][2] && BoardData[i][1] == null)
+                {
+                    BoardData[i][1] = false;
+                    DrawCircle(i, 1);
+                    WhoMove = true;
+                    return;
+                }
+
+            for (var i = 0; i < 3; ++i)
+                if (BoardData[0][i] == BoardData[2][i] && BoardData[1][i] == null)
+                {
+                    BoardData[1][i] = false;
+                    DrawCircle(1, i);
+                    WhoMove = true;
+                    return;
+                }
+
+            if (BoardData[0][0] == BoardData[2][2] && BoardData[1][1] == null)
+            {
+                BoardData[1][1] = false;
+                DrawCircle(1, 1);
+                WhoMove = true;
+                return;
+            }
+
+            if (BoardData[0][0] == BoardData[1][1] && BoardData[2][2] == null)
+            {
+                BoardData[2][2] = false;
+                DrawCircle(2, 2);
+                WhoMove = true;
+                return;
+            }
+
+            if (BoardData[2][2] == BoardData[1][1] && BoardData[0][0] == null)
+            {
+                BoardData[0][0] = false;
+                DrawCircle(0,0);
+                WhoMove = true;
+                return;
+            }
+            if (BoardData[2][0] == BoardData[0][2] && BoardData[1][1] == null)
+            {
+                BoardData[1][1] = false;
+                DrawCircle(1, 1);
+                WhoMove = true;
+                return;
+            }
+
+            if (BoardData[2][0] == BoardData[1][1] && BoardData[0][2] == null)
+            {
+                BoardData[0][2] = false;
+                DrawCircle(0, 2);
+                WhoMove = true;
+                return;
+            }
+
+            if (BoardData[0][2] == BoardData[1][1] && BoardData[2][0] == null)
+            {
+                BoardData[0][2] = false;
+                DrawCircle(0, 2);
+                WhoMove = true;
+                return;
+            }
+
+            for(var i = 0; i < 3; ++i)
+                for (var j = 0; j < 3; ++j)
+                    if (BoardData[i][j] == true)
+                    {
+                        var rand = new Random();
+
+                        seg:
+
+                        var pX = rand.Next(0, 2);
+                        var pY = rand.Next(0, 2);
+
+                        if ((pX == i && pY == j) || BoardData[pX][pY] != null)
+                            goto seg;
+
+                        BoardData[pX][pY] = false;
+                        DrawCircle(pX, pY);
+                        WhoMove = true;
+                        return;
+                    }
         }
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
