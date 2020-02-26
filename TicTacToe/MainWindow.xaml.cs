@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+// ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace TicTacToe
 {
@@ -266,6 +269,7 @@ namespace TicTacToe
                         DrawCross(i, j);
 
                         WhoMove = false;
+                        ComputerMove();
                     }
                     else if (!WhoMove && GameMode == true)
                     {
@@ -284,15 +288,42 @@ namespace TicTacToe
             
             GameMode = null;
 
+            Debug.Print(board.Item2[0].X.ToString(CultureInfo.InvariantCulture) + " " + board.Item2[0].Y.ToString(CultureInfo.InvariantCulture));
+
             var line = new Line()
             {
-                X1 = 30 + board.Item2[0].X * 80,
-                Y1 = 180 + board.Item2[0].Y * 80,
-                X2 = 30 + board.Item2[2].X  * 80 + 40 + 80,
-                Y2 = 180 + board.Item2[0].Y * 80 + 40 + 80,
+                X1 = 30 + board.Item2[0].X * 80 + 40,
+                Y1 = 180 + board.Item2[0].Y * 80 + 40,
+                X2 = 30 + board.Item2[2].X  * 80 + 40,
+                Y2 = 180 + board.Item2[2].Y * 80 + 40,
                 Stroke = Brushes.White,
                 StrokeThickness = 2
             };
+
+            if (board.Item2[0].X == board.Item2[2].X)
+            {
+                line.Y1 -= 40;
+                line.Y2 += 40;
+            }
+            else if (board.Item2[0].Y == board.Item2[2].Y)
+            {
+                line.X1 -= 40;
+                line.X2 += 40;
+            }
+            else if (board.Item2[0].X == 0 && board.Item2[0].Y == 0)
+            {
+                line.X1 -= 40;
+                line.Y1 -= 40;
+                line.X2 += 40;
+                line.Y2 += 40;
+            }
+            else
+            {
+                line.X1 += 40;
+                line.Y1 -= 40;
+                line.X2 -= 40;
+                line.Y2 += 40;
+            }
 
             Board.Children.Add(line);
         }
