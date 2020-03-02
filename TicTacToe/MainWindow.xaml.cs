@@ -342,13 +342,18 @@ namespace TicTacToe
                     posX = Convert.ToInt32(point.X);
                     posY = Convert.ToInt32(point.Y);
                 }
-                else
-                {
-                    posX = Convert.ToInt32(point.X);
-                    posY = Convert.ToInt32(point.Y);
-                }
 
                 if (posX != -1 && posY != -1) break;
+            }
+
+            if (posX == -1 && posY == -1)
+            {
+                var rand = new Random();
+                var max = freePoints.Capacity;
+
+                var point = freePoints[rand.Next(max)];
+                posX = Convert.ToInt32(point.X);
+                posY = Convert.ToInt32(point.Y);
             }
 
             BoardData[posX][posY] = false;
@@ -416,7 +421,7 @@ namespace TicTacToe
             
             GameMode = null;
 
-            Debug.Print(board.Item2[0].X.ToString(CultureInfo.InvariantCulture) + " " + board.Item2[0].Y.ToString(CultureInfo.InvariantCulture));
+            if (board.Item1 == false) return;
 
             var line = new Line()
             {
