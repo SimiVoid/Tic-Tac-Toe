@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
+using System.DirectoryServices.ActiveDirectory;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -222,158 +223,138 @@ namespace TicTacToe
 
         private void ComputerMove()
         {
-            // TODO: Modify
+            int posX = -1, posY = -1;
 
-            for (var i = 0; i < 3; ++i)
-                if (BoardData[i][0] == BoardData[i][2] && BoardData[i][1] == null && BoardData[i][0] == false)
-                {
-                    BoardData[i][1] = false;
-                    DrawCircle(i, 1);
-                    WhoMove = true;s
-                    return;
-                }
-
-            for (var i = 0; i < 3; ++i)
-                if (BoardData[0][i] == BoardData[2][i] && BoardData[1][i] == null && BoardData[0][i] == false)
-                {
-                    BoardData[1][i] = false;
-                    DrawCircle(1, i);
-                    WhoMove = true;
-                    return;
-                }
-
-            if (BoardData[0][0] == BoardData[2][2] && BoardData[1][1] == null && BoardData[0][0] == false)
-            {
-                BoardData[1][1] = false;
-                DrawCircle(1, 1);
-                WhoMove = true;
-                return;
-            }
-
-            if (BoardData[0][0] == BoardData[1][1] && BoardData[2][2] == null && BoardData[0][0] == false)
-            {
-                BoardData[2][2] = false;
-                DrawCircle(2, 2);
-                WhoMove = true;
-                return;
-            }
-
-            if (BoardData[2][2] == BoardData[1][1] && BoardData[0][0] == null && BoardData[1][1] == false)
-            {
-                BoardData[0][0] = false;
-                DrawCircle(0, 0);
-                WhoMove = true;
-                return;
-            }
-            if (BoardData[2][0] == BoardData[0][2] && BoardData[1][1] == null && BoardData[2][0] == false)
-            {
-                BoardData[1][1] = false;
-                DrawCircle(1, 1);
-                WhoMove = true;
-                return;
-            }
-
-            if (BoardData[2][0] == BoardData[1][1] && BoardData[0][2] == null && BoardData[2][0] == false)
-            {
-                BoardData[0][2] = false;
-                DrawCircle(0, 2);
-                WhoMove = true;
-                return;
-            }
-
-            if (BoardData[0][2] == BoardData[1][1] && BoardData[2][0] == null && BoardData[0][2] == false)
-            {
-                BoardData[0][2] = false;
-                DrawCircle(0, 2);
-                WhoMove = true;
-                return;
-            }
-
-            for (var i = 0; i < 3; ++i)
-                if (BoardData[i][0] == BoardData[i][2] && BoardData[i][1] == null)
-                {
-                    BoardData[i][1] = false;
-                    DrawCircle(i, 1);
-                    WhoMove = true;
-                    return;
-                }
-
-            for (var i = 0; i < 3; ++i)
-                if (BoardData[0][i] == BoardData[2][i] && BoardData[1][i] == null)
-                {
-                    BoardData[1][i] = false;
-                    DrawCircle(1, i);
-                    WhoMove = true;
-                    return;
-                }
-
-            if (BoardData[0][0] == BoardData[2][2] && BoardData[1][1] == null)
-            {
-                BoardData[1][1] = false;
-                DrawCircle(1, 1);
-                WhoMove = true;
-                return;
-            }
-
-            if (BoardData[0][0] == BoardData[1][1] && BoardData[2][2] == null)
-            {
-                BoardData[2][2] = false;
-                DrawCircle(2, 2);
-                WhoMove = true;
-                return;
-            }
-
-            if (BoardData[2][2] == BoardData[1][1] && BoardData[0][0] == null)
-            {
-                BoardData[0][0] = false;
-                DrawCircle(0,0);
-                WhoMove = true;
-                return;
-            }
-            if (BoardData[2][0] == BoardData[0][2] && BoardData[1][1] == null)
-            {
-                BoardData[1][1] = false;
-                DrawCircle(1, 1);
-                WhoMove = true;
-                return;
-            }
-
-            if (BoardData[2][0] == BoardData[1][1] && BoardData[0][2] == null)
-            {
-                BoardData[0][2] = false;
-                DrawCircle(0, 2);
-                WhoMove = true;
-                return;
-            }
-
-            if (BoardData[0][2] == BoardData[1][1] && BoardData[2][0] == null)
-            {
-                BoardData[0][2] = false;
-                DrawCircle(0, 2);
-                WhoMove = true;
-                return;
-            }
+            var freePoints = new List<Point>();
 
             for(var i = 0; i < 3; ++i)
-                for (var j = 0; j < 3; ++j)
-                    if (BoardData[i][j] == true)
+                for(var j = 0; j < 3; ++j)
+                    if (BoardData[i][j] == null)
+                        freePoints.Add(new Point(i, j));
+
+            foreach (var point in freePoints)
+            {
+                if (BoardData[Convert.ToInt32(point.X)][1] ==
+                    BoardData[Convert.ToInt32(point.X)][0])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[Convert.ToInt32(point.X)][2] ==
+                        BoardData[Convert.ToInt32(point.X)][0])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[Convert.ToInt32(point.X)][0] ==
+                         BoardData[Convert.ToInt32(point.X)][1])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[Convert.ToInt32(point.X)][2] ==
+                        BoardData[Convert.ToInt32(point.X)][1])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[Convert.ToInt32(point.X)][0] ==
+                         BoardData[Convert.ToInt32(point.X)][2])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[Convert.ToInt32(point.X)][1] == 
+                         BoardData[Convert.ToInt32(point.X)][2])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[1][Convert.ToInt32(point.Y)] ==
+                         BoardData[0][Convert.ToInt32(point.Y)])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[2][Convert.ToInt32(point.Y)] ==
+                        BoardData[0][Convert.ToInt32(point.Y)])
                     {
-                        var rand = new Random();
-
-                        seg:
-
-                        var pX = rand.Next(0, 2);
-                        var pY = rand.Next(0, 2);
-
-                        if ((pX == i && pY == j) || BoardData[pX][pY] != null)
-                            goto seg;
-
-                        BoardData[pX][pY] = false;
-                        DrawCircle(pX, pY);
-                        WhoMove = true;
-                        return;
+                        posX = Convert.ToInt32(point.X);
+                        posY = Convert.ToInt32(point.Y);
                     }
-        }
+                else if (BoardData[2][Convert.ToInt32(point.Y)] ==
+                         BoardData[1][Convert.ToInt32(point.Y)])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[1][Convert.ToInt32(point.Y)] ==
+                        BoardData[0][Convert.ToInt32(point.Y)])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[0][Convert.ToInt32(point.Y)] ==
+                         BoardData[2][Convert.ToInt32(point.Y)])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[1][Convert.ToInt32(point.Y)] ==
+                        BoardData[2][Convert.ToInt32(point.Y)])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[0][0] == BoardData[1][1] && Convert.ToInt32(point.Y) == 2 &&
+                         Convert.ToInt32(point.X) == 2)
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[0][0] == BoardData[2][2] && Convert.ToInt32(point.Y) == 1 &&
+                         Convert.ToInt32(point.X) == 1)
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[2][2] == BoardData[1][1] && Convert.ToInt32(point.Y) == 0 &&
+                         Convert.ToInt32(point.X) == 0)
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[2][0] == BoardData[1][1] && Convert.ToInt32(point.Y) == 2 &&
+                         Convert.ToInt32(point.X) == 0)
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[2][0] == BoardData[0][2] && Convert.ToInt32(point.Y) == 1 &&
+                         Convert.ToInt32(point.X) == 1)
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else if (BoardData[0][2] == BoardData[1][1] && Convert.ToInt32(point.Y) == 0 &&
+                         Convert.ToInt32(point.X) == 2)
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+                else
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
+
+                if (posX != -1 && posY != -1) break;
+            }
+
+            BoardData[posX][posY] = false;
+            DrawCircle(posX, posY);
+            WhoMove = true;
+        }       
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
@@ -412,19 +393,16 @@ namespace TicTacToe
             for(var j = 0; j < 3; ++j)
                 if(pos.X >= 30 + i * 80 && pos.X <= 110 + i * 80 && pos.Y >= 180 + j * 80 && pos.Y <= 260 + j * 80)
                 {
-                    if (WhoMove)
+                    if (WhoMove && BoardData[i][j] == null)
                     {
-                        if (BoardData[i][j] != null) continue;
                         BoardData[i][j] = true;
                         DrawCross(i, j);
 
                         WhoMove = false;
-                        ComputerMove();
+                        if (GameMode == false) ComputerMove();
                     }
-                    else if (!WhoMove && GameMode == true)
+                    else if (!WhoMove && GameMode == true && BoardData[i][j] == null)
                     {
-                        if (BoardData[i][j] != null) continue;
-
                         BoardData[i][j] = false;
                         DrawCircle(i, j);
 
