@@ -1,34 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.DirectoryServices.ActiveDirectory;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml;
+
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace TicTacToe
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public bool?[][] BoardData;
-        public bool? GameMode = null;
+        public bool? GameMode;
         public bool WhoMove;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -48,7 +38,7 @@ namespace TicTacToe
         {
             Board.Background = Brushes.Black;
 
-            var title = new TextBlock()
+            var title = new TextBlock
             {
                 Text = "Tic Tac Toe",
                 FontSize = 26,
@@ -59,7 +49,7 @@ namespace TicTacToe
             Canvas.SetLeft(title, 90);
             Board.Children.Add(title);
 
-            var line1 = new Line()
+            var line1 = new Line
             {
                 X1 = 30,
                 Y1 = 260,
@@ -71,7 +61,7 @@ namespace TicTacToe
 
             Board.Children.Add(line1);
 
-            var line2 = new Line()
+            var line2 = new Line
             {
                 X1 = 30,
                 Y1 = 340,
@@ -83,7 +73,7 @@ namespace TicTacToe
 
             Board.Children.Add(line2);
 
-            var line3 = new Line()
+            var line3 = new Line
             {
                 X1 = 110,
                 Y1 = 180,
@@ -95,7 +85,7 @@ namespace TicTacToe
 
             Board.Children.Add(line3);
 
-            var line4 = new Line()
+            var line4 = new Line
             {
                 X1 = 190,
                 Y1 = 180,
@@ -110,7 +100,7 @@ namespace TicTacToe
 
         private void DrawCross(int x, int y)
         {
-            var line1 = new Line()
+            var line1 = new Line
             {
                 X1 = 30 + x * 80 + 40 - 30,
                 Y1 = 180 + y * 80 + 40 - 30,
@@ -122,7 +112,7 @@ namespace TicTacToe
 
             Board.Children.Add(line1);
 
-            var line2 = new Line()
+            var line2 = new Line
             {
                 X1 = 30 + x * 80 + 40 + 30,
                 Y1 = 180 + y * 80 + 40 - 30,
@@ -137,12 +127,12 @@ namespace TicTacToe
 
         private void DrawCircle(int x, int y)
         {
-            var circle = new Ellipse()
+            var circle = new Ellipse
             {
                 Height = 60,
                 Width = 60,
                 Stroke = Brushes.White,
-                StrokeThickness = 2,
+                StrokeThickness = 2
             };
 
             Canvas.SetTop(circle, 180 + 10 + y * 80);
@@ -172,7 +162,7 @@ namespace TicTacToe
                     }
 
                 if (c1 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
-                else if (c2 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
+                if (c2 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
             }
 
             for (var i = 0; i < 3; ++i)
@@ -194,18 +184,17 @@ namespace TicTacToe
                     }
 
                 if (c1 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
-                else if (c2 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
+                if (c2 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
             }
 
-            if(BoardData[0][0] == BoardData[1][1] && BoardData[2][2] == BoardData[1][1])
+            if (BoardData[0][0] == BoardData[1][1] && BoardData[2][2] == BoardData[1][1])
             {
-                var points = new List<Point> { new Point(0, 0), new Point(1, 1), new Point(2, 2) };
+                var points = new List<Point> {new Point(0, 0), new Point(1, 1), new Point(2, 2)};
 
                 if (BoardData[0][0] == true)
                     return Tuple.Create<bool?, List<Point>>(true, points);
-                else if (BoardData[0][0] == false)
+                if (BoardData[0][0] == false)
                     return Tuple.Create<bool?, List<Point>>(true, points);
-
             }
 
             if (BoardData[2][0] == BoardData[1][1] && BoardData[0][2] == BoardData[1][1])
@@ -214,16 +203,16 @@ namespace TicTacToe
 
                 if (BoardData[2][0] == true)
                     return Tuple.Create<bool?, List<Point>>(true, points);
-                else if (BoardData[2][0] == false)
+                if (BoardData[2][0] == false)
                     return Tuple.Create<bool?, List<Point>>(true, points);
             }
 
             var n = 0;
 
             for (var i = 0; i < 3; ++i)
-                for (var j = 0; j < 3; ++j)
-                    if (BoardData[i][j] != null)
-                        n++;
+            for (var j = 0; j < 3; ++j)
+                if (BoardData[i][j] != null)
+                    n++;
 
             if (n == 0) return Tuple.Create<bool?, List<Point>>(true, new List<Point>());
 
@@ -245,10 +234,10 @@ namespace TicTacToe
 
             var freePoints = new List<Point>();
 
-            for(var i = 0; i < 3; ++i)
-                for(var j = 0; j < 3; ++j)
-                    if (BoardData[i][j] == null)
-                        freePoints.Add(new Point(i, j));
+            for (var i = 0; i < 3; ++i)
+            for (var j = 0; j < 3; ++j)
+                if (BoardData[i][j] == null)
+                    freePoints.Add(new Point(i, j));
 
             foreach (var point in freePoints)
             {
@@ -259,7 +248,7 @@ namespace TicTacToe
                     posY = Convert.ToInt32(point.Y);
                 }
                 else if (BoardData[Convert.ToInt32(point.X)][2] ==
-                        BoardData[Convert.ToInt32(point.X)][0])
+                         BoardData[Convert.ToInt32(point.X)][0])
                 {
                     posX = Convert.ToInt32(point.X);
                     posY = Convert.ToInt32(point.Y);
@@ -271,7 +260,7 @@ namespace TicTacToe
                     posY = Convert.ToInt32(point.Y);
                 }
                 else if (BoardData[Convert.ToInt32(point.X)][2] ==
-                        BoardData[Convert.ToInt32(point.X)][1])
+                         BoardData[Convert.ToInt32(point.X)][1])
                 {
                     posX = Convert.ToInt32(point.X);
                     posY = Convert.ToInt32(point.Y);
@@ -282,7 +271,7 @@ namespace TicTacToe
                     posX = Convert.ToInt32(point.X);
                     posY = Convert.ToInt32(point.Y);
                 }
-                else if (BoardData[Convert.ToInt32(point.X)][1] == 
+                else if (BoardData[Convert.ToInt32(point.X)][1] ==
                          BoardData[Convert.ToInt32(point.X)][2])
                 {
                     posX = Convert.ToInt32(point.X);
@@ -295,11 +284,11 @@ namespace TicTacToe
                     posY = Convert.ToInt32(point.Y);
                 }
                 else if (BoardData[2][Convert.ToInt32(point.Y)] ==
-                        BoardData[0][Convert.ToInt32(point.Y)])
-                    {
-                        posX = Convert.ToInt32(point.X);
-                        posY = Convert.ToInt32(point.Y);
-                    }
+                         BoardData[0][Convert.ToInt32(point.Y)])
+                {
+                    posX = Convert.ToInt32(point.X);
+                    posY = Convert.ToInt32(point.Y);
+                }
                 else if (BoardData[2][Convert.ToInt32(point.Y)] ==
                          BoardData[1][Convert.ToInt32(point.Y)])
                 {
@@ -307,7 +296,7 @@ namespace TicTacToe
                     posY = Convert.ToInt32(point.Y);
                 }
                 else if (BoardData[1][Convert.ToInt32(point.Y)] ==
-                        BoardData[0][Convert.ToInt32(point.Y)])
+                         BoardData[0][Convert.ToInt32(point.Y)])
                 {
                     posX = Convert.ToInt32(point.X);
                     posY = Convert.ToInt32(point.Y);
@@ -319,7 +308,7 @@ namespace TicTacToe
                     posY = Convert.ToInt32(point.Y);
                 }
                 else if (BoardData[1][Convert.ToInt32(point.Y)] ==
-                        BoardData[2][Convert.ToInt32(point.Y)])
+                         BoardData[2][Convert.ToInt32(point.Y)])
                 {
                     posX = Convert.ToInt32(point.X);
                     posY = Convert.ToInt32(point.Y);
@@ -377,12 +366,14 @@ namespace TicTacToe
             BoardData[posX][posY] = false;
             DrawCircle(posX, posY);
             WhoMove = true;
-        }       
+        }
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
+            {
                 Application.Current.Shutdown();
+            }
             else if (e.Key == Key.S)
             {
                 GameMode = false;
@@ -396,13 +387,13 @@ namespace TicTacToe
             else if (e.Key == Key.R)
             {
                 GameMode = null;
-                
+
                 Board.Children.Clear();
                 DrawBoard();
 
                 for (var x = 0; x < 3; ++x)
-                    for (var y = 0; y < 3; ++y) 
-                        BoardData[x][y] = null;
+                for (var y = 0; y < 3; ++y)
+                    BoardData[x][y] = null;
             }
         }
 
@@ -412,9 +403,9 @@ namespace TicTacToe
 
             var pos = Mouse.GetPosition(Board);
 
-            for(var i = 0; i < 3; ++i)
-            for(var j = 0; j < 3; ++j)
-                if(pos.X >= 30 + i * 80 && pos.X <= 110 + i * 80 && pos.Y >= 180 + j * 80 && pos.Y <= 260 + j * 80)
+            for (var i = 0; i < 3; ++i)
+            for (var j = 0; j < 3; ++j)
+                if (pos.X >= 30 + i * 80 && pos.X <= 110 + i * 80 && pos.Y >= 180 + j * 80 && pos.Y <= 260 + j * 80)
                 {
                     if (WhoMove && BoardData[i][j] == null)
                     {
@@ -436,16 +427,16 @@ namespace TicTacToe
             var board = CheckBoard();
 
             if (board == null) return;
-            
+
             GameMode = null;
 
             if (board.Item1 == false) return;
 
-            var line = new Line()
+            var line = new Line
             {
                 X1 = 30 + board.Item2[0].X * 80 + 40,
                 Y1 = 180 + board.Item2[0].Y * 80 + 40,
-                X2 = 30 + board.Item2[2].X  * 80 + 40,
+                X2 = 30 + board.Item2[2].X * 80 + 40,
                 Y2 = 180 + board.Item2[2].Y * 80 + 40,
                 Stroke = Brushes.White,
                 StrokeThickness = 2
