@@ -172,7 +172,7 @@ namespace TicTacToe
                     }
 
                 if (c1 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
-                else if (c2 == 3) return Tuple.Create<bool?, List<Point>>(false, points);
+                else if (c2 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
             }
 
             for (var i = 0; i < 3; ++i)
@@ -194,7 +194,7 @@ namespace TicTacToe
                     }
 
                 if (c1 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
-                else if (c2 == 3) return Tuple.Create<bool?, List<Point>>(false, points);
+                else if (c2 == 3) return Tuple.Create<bool?, List<Point>>(true, points);
             }
 
             if(BoardData[0][0] == BoardData[1][1] && BoardData[2][2] == BoardData[1][1])
@@ -204,7 +204,7 @@ namespace TicTacToe
                 if (BoardData[0][0] == true)
                     return Tuple.Create<bool?, List<Point>>(true, points);
                 else if (BoardData[0][0] == false)
-                    return Tuple.Create<bool?, List<Point>>(false, points);
+                    return Tuple.Create<bool?, List<Point>>(true, points);
 
             }
 
@@ -215,14 +215,32 @@ namespace TicTacToe
                 if (BoardData[2][0] == true)
                     return Tuple.Create<bool?, List<Point>>(true, points);
                 else if (BoardData[2][0] == false)
-                    return Tuple.Create<bool?, List<Point>>(false, points);
+                    return Tuple.Create<bool?, List<Point>>(true, points);
             }
+
+            var n = 0;
+
+            for (var i = 0; i < 3; ++i)
+                for (var j = 0; j < 3; ++j)
+                    if (BoardData[i][j] != null)
+                        n++;
+
+            if (n == 0) return Tuple.Create<bool?, List<Point>>(true, new List<Point>());
 
             return null;
         }
 
         private void ComputerMove()
         {
+            var n = 0;
+
+            for (var i = 0; i < 3; ++i)
+            for (var j = 0; j < 3; ++j)
+                if (BoardData[i][j] != null)
+                    n++;
+
+            if (n == 0) return;
+
             int posX = -1, posY = -1;
 
             var freePoints = new List<Point>();
