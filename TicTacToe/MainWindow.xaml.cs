@@ -15,9 +15,9 @@ namespace TicTacToe
     /// </summary>
     public partial class MainWindow : Window
     {
-        public bool?[][] BoardData;
-        public bool? GameMode;
-        public bool WhoMove;
+        private bool?[][] BoardData;
+        private bool? GameMode;
+        private bool WhoMove;
 
         public MainWindow()
         {
@@ -34,7 +34,7 @@ namespace TicTacToe
             DrawBoard();
         }
 
-        public void DrawBoard()
+        private void DrawBoard()
         {
             Board.Background = Brushes.Black;
 
@@ -44,11 +44,25 @@ namespace TicTacToe
                 FontSize = 26,
                 Foreground = Brushes.White
             };
-
+            
             Canvas.SetTop(title, 10);
             Canvas.SetLeft(title, 90);
             Board.Children.Add(title);
 
+            var text = new TextBlock()
+            {
+                Text = "esc - exit\n" +
+                       "s   - single\n" +
+                       "m   - multi\n" +
+                       "r   - reset",
+                FontSize = 12,
+                Foreground = Brushes.Cornsilk
+            };
+
+            Canvas.SetTop(text, 75);
+            Canvas.SetLeft(text, 20);
+            Board.Children.Add(text);
+            
             var line1 = new Line
             {
                 X1 = 30,
@@ -357,7 +371,7 @@ namespace TicTacToe
             {
                 var rand = new Random();
                 var max = freePoints.Capacity;
-
+                
                 var point = freePoints[rand.Next(max)];
                 posX = Convert.ToInt32(point.X);
                 posY = Convert.ToInt32(point.Y);
